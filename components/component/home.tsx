@@ -58,15 +58,6 @@ export function Home() {
     reader.readAsText(file); // Read the file as text
   }
 
-  const handleByeConvert = (id: number) => {
-    if (!tdfFile) return;
-
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(tdfFile, "text/xml");
-
-    const playerNodes = Array.from(xmlDoc.getElementsByTagName("forcedloss") ?? [])?.filter((forcedLossTag) => forcedLossTag.parentElement?.parentElement);
-  }
-
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
       <Tabs className="max-w-lg mx-auto mt-8" defaultValue="home">
@@ -90,7 +81,7 @@ export function Home() {
                   <h2 className="text-xl font-semibold">{getTournamentName(tdfFile)}</h2>
                   <h3>{getTournamentDate(tdfFile)}</h3>
                   {getPlayersWithForcedLosses(tdfFile).map((player) => (
-                    <ForcedLossAlert name={player?.name ?? ''} />
+                    <ForcedLossAlert name={player?.name ?? ''} id={player?.id ?? ''} tdfFile={tdfFile} />
                   ))}
                   {updateLog.map((update) => <p>{update}</p>)}
                 </div>
