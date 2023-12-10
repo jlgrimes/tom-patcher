@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/theme-provider'
+import { HighlightInit } from '@highlight-run/next/client'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <HighlightInit
+				projectId={'memov59d'}
+				serviceName="my-nextjs-frontend"
+				tracingOrigins
+				networkRecording={{
+					enabled: true,
+					recordHeadersAndBody: true,
+					urlBlocklist: [],
+				}}
+			/>
       <ThemeProvider
             attribute="class"
             defaultTheme="system"

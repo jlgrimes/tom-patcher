@@ -12,10 +12,12 @@ export const handleByeConvert = (tdfFile: string | undefined, id: string) => {
 
   Array.from(xmlDoc.getElementsByTagName("match") ?? [])?.forEach((matchTag) => {
     if (matchTag.getElementsByTagName('player')?.[0]?.getAttribute('userid') === id) {
-      if (matchTag)
+      if (matchTag.getAttribute('outcome') !== '8') {
+        return console.error('outcome tag should be set to 8 here. Aborting.');
+      }
       matchTag.setAttribute('outcome', '5');
     }
   })
 
-  console.log(new XMLSerializer().serializeToString(xmlDoc))
+  return new XMLSerializer().serializeToString(xmlDoc);
 }

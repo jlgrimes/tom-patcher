@@ -2,7 +2,7 @@
 
 import { TabsContent, Tabs } from "@/components/ui/tabs"
 import { CardTitle, CardHeader, CardContent, CardFooter, Card, CardDescription } from "@/components/ui/card"
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useRef, useState } from "react"
 import { InputFile } from "./input-file"
 import { ForcedLossAlert } from "./ForcedLossAlert"
 import { Badge } from "../ui/badge"
@@ -39,7 +39,7 @@ const getPlayersWithForcedLosses = (tdf?: string) => {
 
 export function Home() {
   const [tdfFile, setTdfFile] = useState<string>();
-  const [updateLog, setUpdateLog] = useState([]);
+  const playersWithForcedLosses = useRef<any[]>([]);
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     let input = event.target;
@@ -53,6 +53,7 @@ export function Home() {
 
     reader.onload = function(e) {
         setTdfFile(e.target?.result as string);
+        playersWithForcedLosses.current = getPlayersWithForcedLosses(e.target?.result as string)
     };
 
     reader.readAsText(file); // Read the file as text
@@ -80,10 +81,9 @@ export function Home() {
                 <div className="flex flex-col gap-2">
                   <h2 className="text-xl font-semibold">{getTournamentName(tdfFile)}</h2>
                   <h3>{getTournamentDate(tdfFile)}</h3>
-                  {getPlayersWithForcedLosses(tdfFile).map((player) => (
-                    <ForcedLossAlert name={player?.name ?? ''} id={player?.id ?? ''} tdfFile={tdfFile} />
+                  {playersWithForcedLosses.current.map((player) => (
+                    <ForcedLossAlert name={player?.name ?? ''} id={player?.id ?? ''} tdfFile={tdfFile} setTdfFile={setTdfFile} />
                   ))}
-                  {updateLog.map((update) => <p>{update}</p>)}
                 </div>
               )}
             </CardContent>
