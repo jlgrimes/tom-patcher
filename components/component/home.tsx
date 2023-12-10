@@ -39,6 +39,7 @@ const getPlayersWithForcedLosses = (tdf?: string) => {
 
 export function Home() {
   const [tdfFile, setTdfFile] = useState<string>();
+  const [updateLog, setUpdateLog] = useState([]);
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
     let input = event.target;
@@ -55,7 +56,16 @@ export function Home() {
     };
 
     reader.readAsText(file); // Read the file as text
-}
+  }
+
+  const handleByeConvert = (id: number) => {
+    if (!tdfFile) return;
+
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(tdfFile, "text/xml");
+
+    const playerNodes = Array.from(xmlDoc.getElementsByTagName("forcedloss") ?? [])?.filter((forcedLossTag) => forcedLossTag.parentElement?.parentElement);
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex">
@@ -71,11 +81,9 @@ export function Home() {
               <CardTitle>TOM Patcher</CardTitle>
               <CardDescription>Useful tools to patch up your tournaments. Upload your .tdf file to get started.</CardDescription>
             </CardHeader>
-            <CardContent className="mt-4">
+            <CardContent>
             {!tdfFile && (
-              <CardFooter className="flex justify-center">
-                <InputFile onUpload={handleUpload} />
-              </CardFooter>
+              <InputFile onUpload={handleUpload} />
             )}
               {tdfFile && (
                 <div className="flex flex-col gap-2">
@@ -84,6 +92,7 @@ export function Home() {
                   {getPlayersWithForcedLosses(tdfFile).map((player) => (
                     <ForcedLossAlert name={player?.name ?? ''} />
                   ))}
+                  {updateLog.map((update) => <p>{update}</p>)}
                 </div>
               )}
             </CardContent>
