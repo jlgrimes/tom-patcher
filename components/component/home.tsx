@@ -71,7 +71,7 @@ export function Home() {
           <Card>
             <CardHeader>
               <CardTitle>TOM Patcher</CardTitle>
-              <CardDescription>Useful tools to patch up your tournaments. Upload your .tdf file to get started.</CardDescription>
+              <CardDescription>Useful tools to patch up your tournaments. Upload your .tdf file to get started. Made by <a className="underline" href='https://twitter.com/jgrimesey' target="_blank" rel="noopener noreferrer">Jared Grimes</a>.</CardDescription>
             </CardHeader>
             <CardContent>
             {!tdfFile && (
@@ -82,7 +82,7 @@ export function Home() {
                   <h2 className="text-xl font-semibold">{getTournamentName(tdfFile)}</h2>
                   <h3>{getTournamentDate(tdfFile)}</h3>
                   {playersWithForcedLosses.current.map((player) => (
-                    <ForcedLossAlert name={player?.name ?? ''} id={player?.id ?? ''} tdfFile={tdfFile} setTdfFile={setTdfFile} />
+                    <ForcedLossAlert key={player.id + 'forced-loss'} name={player?.name ?? ''} id={player?.id ?? ''} tdfFile={tdfFile} setTdfFile={setTdfFile} />
                   ))}
                 </div>
               )}
