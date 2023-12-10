@@ -88,7 +88,22 @@ export function Home() {
               )}
             </CardContent>
             <CardFooter>
-              <Button disabled={!tdfFile} size={'sm'} className="mt-2"><DownloadIcon className="mr-2 h-4 w-4" /> Download updated .tdf</Button>
+              <Button onClick={() => {
+                if (!tdfFile) return;
+                
+                var filename = "patched-tournament.tdf";
+                var pom = document.createElement('a');
+                var bb = new Blob([tdfFile], {type: 'text/plain'});
+
+                pom.setAttribute('href', window.URL.createObjectURL(bb));
+                pom.setAttribute('download', filename);
+
+                pom.dataset.downloadurl = ['text/plain', pom.download, pom.href].join(':');
+                pom.draggable = true; 
+                pom.classList.add('dragout');
+
+                pom.click();
+              }} disabled={!tdfFile} size={'sm'} className="mt-2"><DownloadIcon className="mr-2 h-4 w-4"  /> Download updated .tdf</Button>
             </CardFooter>
 
             {/* {tdfFile && tdfFile} */}
