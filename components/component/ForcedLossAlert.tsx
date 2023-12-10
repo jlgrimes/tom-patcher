@@ -15,7 +15,7 @@ export function ForcedLossAlert({ name }: { name: string}) {
       <AlertTitle>Forced Loss Detected</AlertTitle>
       <AlertDescription className="mt-2">
         <p><b>{name}</b> has a forced loss. Fix?</p>
-        <Button size={'sm'} className="mt-2"><RefreshCwIcon className="mr-2 h-4 w-4" /> Convert to bye</Button>
+        <Button variant={'secondary'} size={'sm'} className="mt-2"><RefreshCwIcon className="mr-2 h-4 w-4" /> Convert to bye</Button>
       </AlertDescription>
     </Alert>
   )

@@ -6,6 +6,8 @@ import { ChangeEvent, useState } from "react"
 import { InputFile } from "./input-file"
 import { ForcedLossAlert } from "./ForcedLossAlert"
 import { Badge } from "../ui/badge"
+import { Button } from "../ui/button"
+import { DownloadIcon } from "lucide-react"
 
 const getTournamentName = (tdf: string) => {
   const parser = new DOMParser();
@@ -67,14 +69,16 @@ export function Home() {
           <Card>
             <CardHeader>
               <CardTitle>TOM Patcher</CardTitle>
-              <CardDescription>Useful tools to patch up your tournaments.</CardDescription>
+              <CardDescription>Useful tools to patch up your tournaments. Upload your .tdf file to get started.</CardDescription>
             </CardHeader>
             <CardContent className="mt-4">
+            {!tdfFile && (
+              <CardFooter className="flex justify-center">
+                <InputFile onUpload={handleUpload} />
+              </CardFooter>
+            )}
               {tdfFile && (
                 <div className="flex flex-col gap-2">
-                  <div>
-                    <Badge variant='secondary'>Loaded tournament</Badge>
-                  </div>
                   <h2 className="text-xl font-semibold">{getTournamentName(tdfFile)}</h2>
                   <h3>{getTournamentDate(tdfFile)}</h3>
                   {getPlayersWithForcedLosses(tdfFile).map((player) => (
@@ -83,13 +87,11 @@ export function Home() {
                 </div>
               )}
             </CardContent>
-            {!tdfFile && (
-              <CardFooter className="flex justify-center">
-                <InputFile onUpload={handleUpload} />
-              </CardFooter>
-            )}
+            <CardFooter>
+              <Button disabled={!tdfFile} size={'sm'} className="mt-2"><DownloadIcon className="mr-2 h-4 w-4" /> Download updated .tdf</Button>
+            </CardFooter>
 
-            {tdfFile && tdfFile}
+            {/* {tdfFile && tdfFile} */}
           </Card>
         </TabsContent>
       </Tabs>
